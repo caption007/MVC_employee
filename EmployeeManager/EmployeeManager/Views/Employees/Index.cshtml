@@ -1,0 +1,132 @@
+﻿@using EmployeeManager.Models.Services
+@inject ProfileOptionsService Options
+
+@model PaginatedList<EmployeeManager.Models.Employee>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<form asp-controller="Employees" asp-action="Index" method="post">
+    <p>
+        @Html.DropDownList("SreachOptions", Options.SreachOptions().Select(g => new SelectListItem() { Text = g, Value = g }))
+        <input type="text" name="SearchString" value="@ViewData["SearchString"]">
+        <input type="submit" value="Filter" />
+        <a asp-action="Index">Back to List</a>
+    </p>
+    <p>@ViewData["CurrentSort"]======</p>
+
+</form>
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["IDSortParm"]"asp-route-reverse="@ViewData["reverse"]" asp-route-SearchString="@ViewData["SearchString"]"  asp-route-currentSort="@ViewData["currentSort"]" asp-route-sreachOptions="@ViewData["SreachOptions"]"> 
+                    ID</a>
+            </th>
+            <th>
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["FirstNameSortParm"]"asp-route-reverse="@ViewData["reverse"]"asp-route-SearchString="@ViewData["SearchString"]"asp-route-currentSort="@ViewData["currentSort"]" asp-route-sreachOptions="@ViewData["SreachOptions"]">
+                    FirstName</a>
+            </th>
+            <th>
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["LastNameSortParm"]"asp-route-reverse="@ViewData["reverse"]"asp-route-SearchString="@ViewData["SearchString"]"asp-route-currentSort="@ViewData["currentSort"]" asp-route-sreachOptions="@ViewData["SreachOptions"]">
+                    LastName</a>
+            </th>
+            <th>
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["GenderSortParm"]"asp-route-reverse="@ViewData["reverse"]"asp-route-SearchString="@ViewData["SearchString"]"asp-route-currentSort="@ViewData["currentSort"]" asp-route-sreachOptions="@ViewData["SreachOptions"]">
+                    Gender</a>
+            </th>
+            <th>
+                 <a asp-action="Index" asp-route-sortOrder="@ViewData["BirthdaySortParm"]"asp-route-reverse="@ViewData["reverse"]"asp-route-SearchString="@ViewData["SearchString"]"asp-route-sreachOptions="@ViewData["SreachOptions"]">
+                Birthday</a>
+            </th>
+            <th>
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["AddressSortParm"]"asp-route-reverse="@ViewData["reverse"]"asp-route-SearchString="@ViewData["SearchString"]"asp-route-sreachOptions="@ViewData["SreachOptions"]">
+                    Address</a>
+            </th>
+            <th>
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["PhoneNumberSortParm"]"asp-route-reverse="@ViewData["reverse"]"asp-route-SearchString="@ViewData["SearchString"]"asp-route-sreachOptions="@ViewData["SreachOptions"]">
+                    PhoneNumber</a>
+            </th>
+            <th>
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["DepartmentSortParm"]"asp-route-reverse="@ViewData["reverse"]"asp-route-SearchString="@ViewData["SearchString"]"asp-route-sreachOptions="@ViewData["SreachOptions"]">
+                    Department
+                </a>
+            </th>
+            <th>
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["EmailSortParm"]"asp-route-reverse="@ViewData["reverse"]"asp-route-SearchString="@ViewData["SearchString"]"asp-route-sreachOptions="@ViewData["SreachOptions"]">
+                    Email</a>
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.ID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FirstName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LastName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Gender)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Birthday)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Address)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PhoneNumber)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Department)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Email)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.ID">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.ID">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.ID">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+@{ 
+    var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+}
+<a asp-action="Index"
+   asp-route-page="@(Model.PageIndex - 1)"
+   asp-route-sortOrder="@ViewData["CurrentSort"]"
+   asp-route-sreachOptions="@ViewData["SreachOptions"]"
+   asp-route-SearchString="@ViewData["SearchString"]"
+   asp-route-reverse="@ViewData["Nowreverse"]"
+   class="btn btn-default @prevDisabled">Previous</a>
+<a asp-action="Index"
+   asp-route-sortOrder="@ViewData["CurrentSort"]"
+   asp-route-page="@(Model.PageIndex + 1)"
+   asp-route-sreachOptions="@ViewData["SreachOptions"]"
+   asp-route-SearchString="@ViewData["SearchString"]"
+   asp-route-reverse="@ViewData["Nowreverse"]"
+   class="btn btn-default @nextDisabled">
+    Next
+</a>
+
+<form asp-controller="Home" asp-action="Login">
+    <input  type="submit" value="LogOff" />
+    </form>    
